@@ -1,0 +1,19 @@
+version: '3.4'
+
+services:
+
+  db:
+    container_name: 'task_db'
+    image: postgres
+    restart: always
+    ports:
+      - 5432:5432
+    volumes:
+      - server-data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: task_db
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: serverlist
+
+volumes:
+  server-data:
