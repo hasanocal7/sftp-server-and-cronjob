@@ -3,7 +3,6 @@ package com.example.task.sftp;
 import com.example.task.exception.CustomJSchException;
 import com.example.task.exception.CustomSftpException;
 import com.jcraft.jsch.*;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -30,8 +29,7 @@ public class SftpService {
     @Autowired
     private JSch jSch;
 
-    @SneakyThrows
-    public Session connectSession(){
+    public Session connectSession() throws CustomJSchException {
         try{
             Session session = jSch.getSession(sftpUser, sftpHost, Integer.parseInt(sftpPort));
             session.setConfig("StrictHostKeyChecking", "no");
@@ -45,8 +43,7 @@ public class SftpService {
         }
     }
 
-    @SneakyThrows
-    public ChannelSftp connectSftpChannel(Session session){
+    public ChannelSftp connectSftpChannel(Session session) throws CustomJSchException {
         try{
             Channel channel = session.openChannel("sftp");
             ChannelSftp sftpChannel = (ChannelSftp) channel;
@@ -60,8 +57,7 @@ public class SftpService {
         }
     }
 
-    @SneakyThrows
-    public Stream<String> readSftpPathFile(ChannelSftp sftpChannel, String sftpPath){
+    public Stream<String> readSftpPathFile(ChannelSftp sftpChannel, String sftpPath) throws CustomSftpException {
         try {
             InputStream inputStream = sftpChannel.get(sftpPath);
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
